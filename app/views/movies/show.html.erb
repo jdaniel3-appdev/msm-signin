@@ -18,6 +18,27 @@
       </div>
     </div>
 
+    <hr>
+
+    <% matching_records = Bookmark.where({:user_id => @current_user.id, :movie_id => @the_movie.id })%>
+    <% bookmark = matching_records.at(0) %>
+
+    <% if bookmark == nil %>
+      <form action="/insert_bookmark" method="post">
+        <input name="query_movie_id" type="hidden" value="<%= @the_movie.id %>">
+        <button>Bookmark movie</button>
+      </form>
+
+    <% else %>
+      <form action="/delete_bookmark/<%= bookmark.id %>" method="post">
+        <input name="path_id" type="hidden" value="<%= bookmark.id %>">
+        <button>Un-bookmark</button>
+      </form>
+
+    <% end %>
+
+    <hr>
+
     <dl>
       <dt>
         Title
@@ -58,7 +79,7 @@
         Image
       </dt>
       <dd>
-        <%= @the_movie.image %>
+        <img src="<%= @the_movie.image %>">
       </dd>
 
       <dt>
